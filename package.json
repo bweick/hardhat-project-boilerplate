@@ -1,0 +1,62 @@
+{
+  "name": "hardhat-project-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn compile && yarn build:ts:latest",
+    "build:ts:latest": "yarn typechain && yarn transpile:dist:latest",
+    "chain": "npx hardhat node",
+    "clean": "rm -f coverage.json; rm -rf .coverage_cache; rm -rf .coverage_contracts; rm -rf cache; rm -rf coverage; rm -rf typechain; rm -rf artifacts",
+    "compile": "npx hardhat compile",
+    "coverage": "yarn clean && yarn build && yarn cov:command",
+    "cov:command": "COVERAGE=true node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage",
+    "lint": "yarn run lint-sol && yarn run lint-ts",
+    "lint-sol": "solhint 'contracts/**/*.sol'",
+    "lint-ts": "eslint -c .eslintrc.js --ext .ts test utils tasks --fix",
+    "precommit": "lint-staged",
+    "test": "npx hardhat test --network localhost",
+    "test:clean": "yarn clean && yarn build && yarn test",
+    "test:fast": "NO_COMPILE=true TS_NODE_TRANSPILE_ONLY=1 npx hardhat test --network localhost --no-compile",
+    "transpile": "tsc",
+    "transpile:dist:latest": "tsc --project tsconfig.dist.json",
+    "transpile:dist:hardhat": "tsc --project tsconfig.hardhat.json",
+    "typechain": "npx hardhat typechain"
+  },
+  "keywords": [],
+  "author": "bweick",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.6",
+    "solidity-coverage": "^0.8.2",
+    "ts-node": "^10.9.1",
+    "typechain": "^8.1.1"
+  },
+  "dependencies": {
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
+    "solhint": "^3.3.7",
+    "typescript": "^4.9.4",
+    "web3": "^1.8.1"
+  },
+  "lint-staged": {
+    "contracts/**/*.sol": [
+      "yarn lint-sol --fix"
+    ],
+    "test/**/*.ts": [
+      "yarn lint-ts --fix"
+    ],
+    "utils/**/*.ts": [
+      "yarn lint-ts --fix"
+    ]
+  }
+}
